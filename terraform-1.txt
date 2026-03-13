@@ -197,7 +197,40 @@ if we want to run some scripts or take some actiom the we can use provisioners
 
 provisioners will be executaed at the time of destroy time or creation  time but not time of update the resources
 
+    provisioner "local-exec" {
+    command = "echo ${self.public_ip} > inventory.ini"
+  }
+ 
+    provisioner "local-exec" {
+    command = "echo  > inventory.ini"
+    when = destroy
+  }
+  
+  
+      connection {
+      type        = "ssh"
+      user        = "ec2-user" # Common default for Amazon Linux AMIs
+      password = "DevOps321"
+      host        = self.public_ip
+  }
+  
 
+     provisioner "remote-exec" {
+      inline = [ 
+        "sudo dnf install nginx -y",
+        "sudo systemctl start nginx"
+       ]
+
+  }
+
+       provisioner "remote-exec" {
+      inline = [ 
+
+        "sudo systemctl stop nginx"
+       ]
+       when = destroy
+
+  }
 
 
 
