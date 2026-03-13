@@ -1,3 +1,16 @@
+variable "name" {
+    type  = string
+    default = "locals"
+
+}
+
+
+variable "Environmnet" {
+    type = string
+    default = "dev"
+}
+
+
 data "aws_ami" "roboshop" {
   most_recent      = true
   owners           = ["973714476881"]
@@ -16,13 +29,4 @@ data "aws_ami" "roboshop" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-}
-
-
-
-data "aws_instance" "terraform_inc" {
-  instance_state_names = ["running"]
-
-  instance_id =  ["i-0df036081868dda86"]
-
 }

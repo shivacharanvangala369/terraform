@@ -1,0 +1,222 @@
+terraform init
+terraform plan
+terraform apply
+terrafrom destroy
+
+
+resourec "type_of resourec" "resource_name_for_terrafrom" {
+key = value
+
+}
+
+
+Variables
+==============
+
+
+Variable "name_fo _variable" {
+	default = " "
+	
+}
+
+
+Conditions
+============
+
+expression ? "true_value" : "false_value"
+
+
+1. default values inside variables.tf
+2. terraform.tfvars
+3. command line
+4. env variables( export TF_VAR_var_name=" ") to set
+                 ( unset TF_VAR_var_name ) to unset
+
+
+preferances
+
+1. command line 
+terraform plan -var= "var_name = value"
+terraform plan -var="sg_name=allow-all-terraform-cmd"
+
+2. .tfvars
+3. env
+4. .tf
+
+
+loops
+=========================
+1.  count based loops
+2.  for_each
+3.  dynamic block
+
+1. count =======================
+
+count.index
+
+output "name _of _output" {
+	value = " "
+	
+	}
+	
+2. for_each ====================
+	
+for_each
+	
+for_each will work on set
+
+list ---> orderd , index based values --> allows duplicates
+
+set ---> order not garente, remove duplicate values
+
+
+count loop --> list based loop
+for_each ---> set based loop
+
+
+each.key
+eack.value
+
+toset( to convert list to set)
+
+3. dymanic  ===========================
+
+dynamic is for repeated code inside resource
+
+
+  dynamic "ingress" {
+    for_each = var.ingress
+    content {
+          from_port        = ingress.value.port
+          to_port          = ingress.value.port
+          protocol         = "tcp"
+          cidr_blocks      = ingress.value.cidr_blocks
+          description      = ingress.value.description
+      
+    }
+  }
+
+
+basically 
+count ---> list based
+for_each ---> set or  map
+
+
+
+dynamic ---> to repate block of code 
+
+in dynamic both key and value are same
+
+for ex : ingress.value and ingress.key are same
+
+
+for explame below ingress is block and we have repaet this block to open other posrt so in this stiatuation
+we go with dynamic for port alloacation 
+
+
+ ingress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
+
+
+data sources
+===================
+
+if you want to get info from provider to craete resource or to know any info,
+we can use data sources or usllay say as getting info using data sources
+
+
+data "name_of_data_source" "name"{
+
+}
+
+output "name" {
+ value = data.name_of_data_source.name
+}
+
+
+
+Function 
+========================
+we can't write custome or our own  function in terraform
+we have inbuilt function given by terraform
+
+merg()
+toset
+length()
+max()
+substr()
+trim()
+endswith()
+....etc
+
+
+
+state
+=================
+.tf files, state file , actual infra
+
+
+when we run terraform plan or terraform apply
+
+it will check .tf files and state file with actual infra 
+
+if this is diff then terraform will make same config to actual infra with comparing to state file and .tf file
+state is locked by terraform when it is performing action on it.
+
+remote state 
+================
+in collabaration env state should be stored in remote like s3. so we can prevent errors and duplicates.
+
+it should be loacked parallel modification should not be allowed.
+
+
+locals
+==============
+local are like variables but as extra capabalities
+you can refer other variables inside locals.
+values inside locals cant be overriden.
+you can keep functions and expression also in locals.
+
+
+
+
+provisioners
+=============
+1. local-exec  --- > where terraform exectes( like we are ruuning now from windows say like from local exec)
+2. remote-exec --->exectues insides the resources created by terraform.
+
+
+if we want to run some scripts or take some actiom the we can use provisioners
+
+provisioners will be executaed at the time of destroy time or creation  time but not time of update the resources
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
